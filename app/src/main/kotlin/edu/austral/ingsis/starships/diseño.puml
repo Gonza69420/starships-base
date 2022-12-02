@@ -1,0 +1,55 @@
+@startuml
+
+class Ship{
+gun : Gun
+position : Position
+
+setGun(gun : Gun) : Ship
+}
+
+class Asteriod{
+healty : Double
+position : Position
+size : Double
+initialPosition: Position
+finalPosition: Position
+velocity : Double
+listener : Listener
+}
+
+interface Gun{
+shoot() : Bullet
+}
+
+class Bullet{
+velocity : Double
+position : Position
+size : Double
+}
+
+class Position{
+x : Double
+y : Double
+}
+
+interface Serializable{
+toJson() : JSONObject
+}
+
+interface Listener{
+onEvent(event : Event)
+}
+
+class AsteroidListener implements Listener{
+onEvent(event : Event)
+}
+
+interface Movable{}
+
+class Constats{}
+
+class Game{}
+
+class FabricSushi{}
+
+@enduml
