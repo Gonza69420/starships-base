@@ -3,28 +3,62 @@
 class Ship{
 gun : Gun
 position : Position
+direction : Int
 
 setGun(gun : Gun) : Ship
+shoot() : Bullet
 }
 
 class Asteriod{
-healty : Double
+healt : Double
 position : Position
 size : Double
 initialPosition: Position
 finalPosition: Position
 velocity : Double
-listener : Listener
+points : Int
+destroy : DestroyStrategy
+
+destroy() : List<Asteriod>
+destroyWithGun() : Gun
+}
+
+interface DestroyStrategy{
+destroy() : List<Asteriod>
+}
+
+class destroyAsteroid implements DestroyStrategy{
+destroy() : List<Asteriod>
+}
+
+class divideAsteroid implements DestroyStrategy{
+numberOfDivisions : Int
+velocity : Double
+destroy() : List<Asteriod>
 }
 
 interface Gun{
-shoot() : Bullet
+number : Int
+bullet : Bullet
+ammo : Int
+shoot() : List<Bullet>
 }
+
+class Laser implements Gun{
+}
+
+class normalShoot implements Gun{
+}
+
+class MegaBomb implements Gun{
+}
+
 
 class Bullet{
 velocity : Double
 position : Position
-size : Double
+sizeX : Double
+sizeY : Double
 }
 
 class Position{
@@ -32,24 +66,26 @@ x : Double
 y : Double
 }
 
+class Level{
+spawnRate: Int
+pointsToLevelUp: Int
+number : Int
+}
+
+class Game{
+Ship : Ship
+Level : Level
+}
+
 interface Serializable{
 toJson() : JSONObject
 }
 
-interface Listener{
-onEvent(event : Event)
-}
-
-class AsteroidListener implements Listener{
-onEvent(event : Event)
-}
 
 interface Movable{}
 
 class Constats{}
 
 class Game{}
-
-class FabricSushi{}
 
 @enduml
