@@ -1,4 +1,10 @@
 package game.Entities.Gun
 
-class Gun {
+import game.Entities.Bullet
+
+interface Gun {
+    fun getBullet() : Bullet
+    fun getAmmo() : Int
+
+    fun shoot() : List<Bullet>
 }
