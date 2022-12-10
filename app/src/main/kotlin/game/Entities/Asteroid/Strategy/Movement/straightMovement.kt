@@ -4,6 +4,6 @@ import game.Position
 
 class straightMovement(aceleration : Double) : asteroidMovement {
     override fun move(): Position {
-        return Position(0, 0)
+        return Position(0.0, 0.0)
     }
 }
