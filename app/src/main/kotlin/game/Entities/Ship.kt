@@ -7,4 +7,8 @@ class Ship(private val gun : Gun) {
     fun setGun(gun : Gun) : Ship {
         return Ship(gun)
     }
+
+    fun shoot() : List<Bullet> {
+        return gun.shoot()
+    }
 }
