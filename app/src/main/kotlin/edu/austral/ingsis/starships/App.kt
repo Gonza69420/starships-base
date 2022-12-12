@@ -2,6 +2,11 @@ package edu.austral.ingsis.starships
 
 import edu.austral.ingsis.starships.ui.*
 import edu.austral.ingsis.starships.ui.ElementColliderType.*
+import game.Adapter.ShipAdapter
+import game.Entities.Gun.normalGun
+import game.Entities.Ship
+import game.Movement.ShipMovement
+import game.Position
 import javafx.application.Application
 import javafx.application.Application.launch
 import javafx.scene.Scene
@@ -29,7 +34,7 @@ class Starships() : Application() {
         facade.elements["asteroid-3"] =
             ElementModel("asteroid-3", 200.0, 200.0, 20.0, 30.0, 180.0, Elliptical, null)
 
-        val starship = ElementModel("starship", 300.0, 300.0, 40.0, 40.0, 270.0, Triangular, STARSHIP_IMAGE_REF)
+        val starship = ShipAdapter().adapt(Ship(normalGun(2), Position(0.0,0.0,0.0),0.0,0.0,1))
         facade.elements["starship"] = starship
 
         facade.timeListenable.addEventListener(TimeListener(facade.elements))
@@ -84,11 +89,13 @@ class CollisionListener() : EventListener<Collision> {
 
 class KeyPressedListener(private val starship: ElementModel): EventListener<KeyPressed> {
     override fun handle(event: KeyPressed) {
+        val movement = ShipMovement()
+        val ship =  ShipAdapter().invert(starship)
         when(event.key) {
-            KeyCode.UP -> starship.y.set(starship.y.value - 5 )
-            KeyCode.DOWN -> starship.y.set(starship.y.value + 5 )
-            KeyCode.LEFT -> starship.x.set(starship.x.value - 5 )
-            KeyCode.RIGHT -> starship.x.set(starship.x.value + 5 )
+            KeyCode.UP -> movement.acelerate(ship )
+            KeyCode.DOWN -> movement.desacelerate(ship)
+            KeyCode.LEFT -> movement.rotateLeft(ship)
+            KeyCode.RIGHT -> movement.rotateRight(ship)
             else -> {}
         }
     }

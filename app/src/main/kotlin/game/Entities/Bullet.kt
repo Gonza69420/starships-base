@@ -2,7 +2,11 @@ package game.Entities
 
 import game.Position
 
-class Bullet(private val velocity: Int, private val damage: Int, private val sizeX : Double, private val sizeY : Double) {
+class Bullet(private val velocity: Int, private val damage: Int, private val sizeX : Double, private val sizeY : Double,
+             position: Position, velocityX: Double, velocityY: Double, id: Int
+) :
+    Moveable(position, velocityX, velocityY, id) {
+
     fun getVelocity(): Int {
         return velocity
     }
@@ -18,6 +22,5 @@ class Bullet(private val velocity: Int, private val damage: Int, private val siz
     fun getSizeY(): Double {
         return sizeY
     }
-
 
 }

@@ -7,7 +7,6 @@ class Position(private val x : Double , private val  y : Double, private var rad
         radians = if ( temp > 2*Math.PI) temp - 2 * Math.PI else temp
     }
 
-
     fun getX() : Double {
         return x
     }
