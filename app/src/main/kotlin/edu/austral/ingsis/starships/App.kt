@@ -94,8 +94,8 @@ class KeyPressedListener(private val starship: ElementModel): EventListener<KeyP
         when(event.key) {
             KeyCode.UP -> movement.acelerate(ship )
             KeyCode.DOWN -> movement.desacelerate(ship)
-            KeyCode.LEFT -> movement.rotateLeft(ship)
-            KeyCode.RIGHT -> movement.rotateRight(ship)
+            KeyCode.LEFT -> starship.x.set(starship.x.value - 5 )
+            KeyCode.RIGHT -> starship.x.set(starship.x.value + 5 )
             else -> {}
         }
     }

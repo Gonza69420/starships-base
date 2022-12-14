@@ -18,6 +18,10 @@ open class Moveable(private val position: Position, private val velocityX : Doub
         return velocityY
     }
 
+    fun getVelocity() : Double {
+        return Math.sqrt(velocityX * velocityX + velocityY * velocityY)
+    }
+
     fun updatePosition() : Moveable {
         return Moveable(Position(position.getX() + velocityX, position.getY() + velocityY), velocityX, velocityY, getId())
     }

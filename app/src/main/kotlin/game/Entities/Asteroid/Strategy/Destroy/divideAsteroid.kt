@@ -1,4 +1,15 @@
 package game.Entities.Asteroid.Strategy.Destroy
 
-class divideAsteroid {
+import game.Entities.Asteroid.Asteroid
+import game.Entities.Asteroid.Strategy.Movement.straightMovement
+
+class divideAsteroid(private val size : Int) : DestroyStrategy<Asteroid> {
+
+    override fun destroy(asteroid: Asteroid): List<Asteroid> {
+        val asteroids = mutableListOf<Asteroid>()
+        for (i in 0 until size) {
+            asteroids.add(Asteroid(asteroid.getHealth()/ size , asteroid.getSize()/ size, asteroid.getPosition(), asteroid.getFinalPosition(), asteroid.getPoints()/ size, destroyAsteroid(), straightMovement(0.0, asteroid.getVelocity()), asteroid.getPosition(), asteroid.getVelocityX(), asteroid.getVelocityY(), asteroid.getId()))
+        }
+        return asteroids
+    }
 }

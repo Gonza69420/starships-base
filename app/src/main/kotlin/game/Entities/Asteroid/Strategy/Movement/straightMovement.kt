@@ -4,14 +4,14 @@ import game.Entities.Asteroid.Asteroid
 import game.Entities.Moveable
 import game.Position
 
-class straightMovement(val acceleration : Double, val initialVelocity : Double) : asteroidMovement {
+class straightMovement(val acceleration : Double, val initialVelocity : Double) : Movement {
 
-    override fun move(asteroid: Asteroid): Moveable {
+    override fun move(asteroid: Moveable): Moveable {
         return if (asteroid.getVelocityX() == 0.0 && asteroid.getVelocityY() == 0.0) {
             if (asteroid.getInitialPosition().getX() == 0.0 || asteroid.getFinalPosition().getX() == 0.0){
-                return Moveable(asteroid.getPosition(), getInitialVelocityX( asteroid , true), getInitialVelocityY(asteroid, true), asteroid.getId())
+                return Asteroid(asteroid.getPosition(), getInitialVelocityX( asteroid , true), getInitialVelocityY(asteroid, true), asteroid.getId())
             }
-                return Moveable(asteroid.getPosition(), getInitialVelocityX( asteroid, false ), getInitialVelocityY(asteroid,false), asteroid.getId())
+                return Asteroid(asteroid.getPosition(), getInitialVelocityX( asteroid, false ), getInitialVelocityY(asteroid,false), asteroid.getId())
         }else{
             accelerate(asteroid)
         }
@@ -19,7 +19,7 @@ class straightMovement(val acceleration : Double, val initialVelocity : Double) 
 
 
     fun accelerate(asteroid: Asteroid) : Moveable {
-        return Moveable(asteroid.getPosition(), asteroid.getVelocityX() * acceleration, asteroid.getVelocityY() * acceleration, asteroid.getId())
+        return Asteroid(asteroid.getPosition(), asteroid.getVelocityX() * acceleration, asteroid.getVelocityY() * acceleration, asteroid.getId())
     }
 
     fun getAngleTopDown(asteroid: Asteroid) : Double {
@@ -50,6 +50,10 @@ class straightMovement(val acceleration : Double, val initialVelocity : Double) 
         } else {
             initialVelocity * Math.sin(getAngleLeftRight(asteroid))
         }
+    }
+
+    fun getAceleration() : Double {
+        return acceleration
     }
 
 
