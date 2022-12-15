@@ -14,7 +14,7 @@ class Laser(private val ammo: Int, position: Position, id: Int) : Gun, Entity(id
         TODO("Not yet implemented")
     }
 
-    override fun shoot(): List<Bullet> {
+    override fun shoot(position: Position, id : Int): List<Bullet> {
         TODO("Not yet implemented")
     }
 

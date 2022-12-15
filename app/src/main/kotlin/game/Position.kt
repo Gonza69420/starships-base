@@ -1,9 +1,9 @@
 package game
 
-class Position(private val x : Double , private val  y : Double, private var radians : Double) {
+class Position(private val x :  Double , private val  y : Double, private var radians : Double) {
 
     constructor( x : Double ,  y : Double) : this( x ,  y , 0.0) {
-        val temp = Math.acos(x / Math.sqrt( x *  x  +  y *  y ))
+        val temp = Math.acos(x / Math.sqrt((x *  x  +  y *  y).toDouble()))
         radians = if ( temp > 2*Math.PI) temp - 2 * Math.PI else temp
     }
 
@@ -17,5 +17,9 @@ class Position(private val x : Double , private val  y : Double, private var rad
 
     fun getRadians() : Double {
         return radians
+    }
+
+    fun getAngleFromRadians() : Double {
+        return getRadians() * 180 / Math.PI
     }
 }

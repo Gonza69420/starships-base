@@ -24,6 +24,6 @@ class ShipAdapter : Adapter<Ship> {
     }
 
     fun invert(t: ElementModel) : Ship{
-        return Ship( normalGun(2) , Position(t.x.get(), t.y.get(), t.rotationInDegrees.get() - 270), 2.0, 2.0, 1)
+        return Ship( normalGun(2, 0 ,1) , Position(t.x.get(), t.y.get(), t.rotationInDegrees.get()), 2.0, 2.0, 1)
     }
 }

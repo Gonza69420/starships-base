@@ -1,7 +1,7 @@
 package game.Entities.Asteroid
 
 import game.Entities.Asteroid.Strategy.Destroy.DestroyStrategy
-import game.Entities.Asteroid.Strategy.Movement.Movement
+import game.Movement.Movement
 import game.Entities.Interfaces.Damageable
 import game.Entities.Interfaces.Harmful
 import game.Entities.Moveable
@@ -46,7 +46,7 @@ class Asteroid(private val health : Double, private val size : Double,
 
 
     override fun getDamage(): Double {
-        TODO("Not yet implemented")
+        return 10.0
     }
 
     fun getSize() : Double {

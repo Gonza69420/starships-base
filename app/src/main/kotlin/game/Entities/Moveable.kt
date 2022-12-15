@@ -38,8 +38,8 @@ open class Moveable(private val position: Position, private val velocityX : Doub
         return Moveable(position, velocityX, velocityY, getId())
     }
 
-
-
-
+    fun acelerate(velocityX : Double, velocityY : Double) : Moveable {
+        return Moveable(position, this.velocityX + velocityX, this.velocityY + velocityY, getId())
+    }
 
 }

@@ -1,4 +1,4 @@
-package game.Entities.Asteroid.Strategy.Movement
+package game.Movement
 
 import game.Entities.Moveable
 

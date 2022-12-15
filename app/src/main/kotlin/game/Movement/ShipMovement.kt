@@ -21,7 +21,7 @@ class ShipMovement {
         return Ship(ship.getGun(), ship.getPosition(), ship.getVelocityX() + 0.1 * Math.cos(ship.getPosition().getRadians()), ship.getVelocityY() + 0.1 * Math.sin(ship.getPosition().getRadians()), ship.getId())
     }
 
-    fun shoot(ship : Ship) : List<Bullet> {
-        return ship.shoot()
+    fun shoot(ship : Ship, id : Int) : List<Bullet> {
+        return ship.shoot(id)
     }
 }
