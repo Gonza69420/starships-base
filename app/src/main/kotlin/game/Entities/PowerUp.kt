@@ -15,7 +15,7 @@ class PowerUp( private val gun : Gun, private val movement: Movement ,position: 
     }
 
     fun setGun(ship : Ship) : Ship {
-        return Ship(gun, ship.getPosition(), ship.getVelocityX(), ship.getVelocityY(), ship.getId())
+        return Ship(gun, ship.getHealth() ,ship.getPosition(), ship.getVelocityX(), ship.getVelocityY(), ship.getId())
     }
 
 

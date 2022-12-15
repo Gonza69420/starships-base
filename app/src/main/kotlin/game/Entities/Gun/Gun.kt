@@ -9,4 +9,6 @@ interface Gun  {
     fun getAmmo() : Int
 
     fun shoot(position : Position, id : Int) : List<Bullet>
+
+    fun wasteAmmo() : Gun
 }

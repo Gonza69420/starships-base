@@ -17,6 +17,10 @@ class Ship(private val gun : Gun, private val health : Double, position: Positio
         return gun.shoot(getPosition(), id)
     }
 
+    fun wasteAmmo() : Ship {
+        return Ship(gun.wasteAmmo(), health, getPosition(), getVelocityX(), getVelocityY(), getId())
+    }
+
     fun getGun() : Gun {
         return gun
     }

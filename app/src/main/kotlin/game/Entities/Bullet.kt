@@ -1,16 +1,15 @@
 package game.Entities
 
+import game.Entities.Interfaces.Harmful
 import game.Movement.Movement
 import game.Position
 
-class Bullet(private val damage: Int, private val sizeX : Double, private val sizeY : Double, private val movement : Movement,
+class Bullet(private val damage: Double, private val sizeX : Double, private val sizeY : Double, private val movement : Movement,
              position: Position, velocityX: Double, velocityY: Double, id: Int
 ) :
-    Moveable(position, velocityX, velocityY, id) {
+    Moveable(position, velocityX, velocityY, id), Harmful {
 
-    fun getDamage(): Int {
-        return damage
-    }
+
 
     fun getSizeX(): Double {
         return sizeX
@@ -18,6 +17,10 @@ class Bullet(private val damage: Int, private val sizeX : Double, private val si
 
     fun getSizeY(): Double {
         return sizeY
+    }
+
+    override fun getDamage(): Double {
+        return damage.toDouble()
     }
 
 }

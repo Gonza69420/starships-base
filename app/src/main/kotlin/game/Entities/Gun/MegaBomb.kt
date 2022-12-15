@@ -17,4 +17,13 @@ class MegaBomb(private val ammo : Int, private val screenXSize : Double, private
     override fun shoot(position: Position, id : Int): List<Bullet> {
         TODO("Not yet implemented")
     }
+
+    override fun wasteAmmo(): Gun {
+        if (ammo > 0) {
+            return MegaBomb(ammo - 1, screenXSize, screenYSize, getId())
+        } else {
+            return normalGun(getId(), 0,1)
+        }    }
+
+
 }

@@ -34,12 +34,20 @@ class Starships() : Application() {
         facade.elements["asteroid-3"] =
             ElementModel("asteroid-3", 200.0, 200.0, 20.0, 30.0, 180.0, Elliptical, null)
 
-        val starship = ShipAdapter().adapt(Ship(normalGun(2), Position(0.0,0.0,0.0),0.0,0.0,1))
-        facade.elements["starship"] = starship
+        facade.elements["starship"] = ElementModel(
+            "starship",
+            0.0,
+            0.0,
+            70.0,
+            70.0,
+            0.0,
+            Rectangular,
+            STARSHIP_IMAGE_REF
+        )
 
         facade.timeListenable.addEventListener(TimeListener(facade.elements))
         facade.collisionsListenable.addEventListener(CollisionListener())
-        keyTracker.keyPressedListenable.addEventListener(KeyPressedListener(starship))
+        keyTracker.keyPressedListenable.addEventListener(KeyPressedListener(facade.elements["starship"]!!))
 
         val scene = Scene(facade.view)
         keyTracker.scene = scene
@@ -90,10 +98,9 @@ class CollisionListener() : EventListener<Collision> {
 class KeyPressedListener(private val starship: ElementModel): EventListener<KeyPressed> {
     override fun handle(event: KeyPressed) {
         val movement = ShipMovement()
-        val ship =  ShipAdapter().invert(starship)
         when(event.key) {
-            KeyCode.UP -> movement.acelerate(ship )
-            KeyCode.DOWN -> movement.desacelerate(ship)
+            KeyCode.UP -> starship.y.set(starship.y.value - 5 )
+            KeyCode.DOWN -> starship.y.set(starship.y.value + 5 )
             KeyCode.LEFT -> starship.x.set(starship.x.value - 5 )
             KeyCode.RIGHT -> starship.x.set(starship.x.value + 5 )
             else -> {}

@@ -8,19 +8,12 @@ import game.Entities.Moveable
 import game.Position
 
 class Asteroid(private val health : Double, private val size : Double,
-               private val initialPosition : Position, private val finalPosition: Position,
                private val points : Int, private val destroyStrategy: DestroyStrategy<*>,
                private val asteroidMovement: Movement,
                position: Position, velocityX: Double, velocityY: Double, id: Int
 ) : Moveable(position, velocityX, velocityY, id), Damageable, Harmful {
 
-    fun getInitialPosition() : Position {
-        return initialPosition
-    }
 
-    fun getFinalPosition() : Position {
-        return finalPosition
-    }
 
 
     fun destroy() : List<*> {
@@ -36,7 +29,7 @@ class Asteroid(private val health : Double, private val size : Double,
     }
 
     override fun setHealth(health: Double): Damageable {
-        return Asteroid(health, size, initialPosition, finalPosition, points, destroyStrategy, asteroidMovement,
+        return Asteroid(health, size, points, destroyStrategy, asteroidMovement,
             getPosition(), getVelocityX(), getVelocityY(), getId())
     }
 
