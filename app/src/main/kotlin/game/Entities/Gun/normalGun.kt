@@ -1,5 +1,6 @@
 package game.Entities.Gun
 
+import game.Constants.Constants
 import game.Movement.straightMovement
 import game.Entities.Bullet
 import game.Entities.Entity
@@ -8,7 +9,7 @@ import game.Position
 
 class normalGun(id: Int, private val ammo : Int, private val guns : Int) : Gun, Entity(id) {
     override fun getBullet(): Bullet {
-        return Bullet(1.0, 1.0, 1.0, straightMovement( 0.0, 20.0 , Position(0.0, 0.0), Position(10.0,10.0)), Position(0.0, 0.0), 0.0, 0.0, 0)
+        return Bullet(Constants.BULLET_DAMAGE, Constants.BULLET_SIZEX, Constants.BOMB_SIZEY, straightMovement( 0.0, Constants.BULLET_SPEED , Position(0.0, 0.0), Position(10.0,10.0)), Position(0.0, 0.0), 0.0, 0.0, 0)
     }
 
     override fun getAmmo(): Int {
