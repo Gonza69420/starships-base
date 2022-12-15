@@ -4,9 +4,10 @@ import edu.austral.ingsis.starships.ui.KeyPressed
 import game.Entities.Moveable
 import game.Entities.Ship
 import game.Movement.ShipMovement
+import game.gameState.Command.Invoker
 
 class PausedGame : Game {
-    override fun handleAction(keyMovement: KeyPressed): Game {
+    override fun handleAction(key : String): Game {
         TODO("Not yet implemented")
     }
 
@@ -27,6 +28,10 @@ class PausedGame : Game {
     }
 
     override fun setShip(ship: List<Ship>): Game {
+        TODO("Not yet implemented")
+    }
+
+    override fun setInvoker(invoker: Invoker): Game {
         TODO("Not yet implemented")
     }
 }

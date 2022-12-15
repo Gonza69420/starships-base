@@ -3,10 +3,18 @@ package edu.austral.ingsis.starships
 import edu.austral.ingsis.starships.ui.*
 import edu.austral.ingsis.starships.ui.ElementColliderType.*
 import game.Adapter.ShipAdapter
+import game.Constants.Constants
 import game.Entities.Gun.normalGun
 import game.Entities.Ship
+import game.Factory.EntityFactory
 import game.Movement.ShipMovement
 import game.Position
+import game.gameState.Command.Commands.AccelerateCommand
+import game.gameState.Command.Commands.DesacelerateCommand
+import game.gameState.Command.Commands.RotateLeft
+import game.gameState.Command.Invoker
+import game.gameState.Game
+import game.gameState.GamePlayeable
 import javafx.application.Application
 import javafx.application.Application.launch
 import javafx.scene.Scene
@@ -24,6 +32,8 @@ class Starships() : Application() {
 
     companion object {
         val STARSHIP_IMAGE_REF = ImageRef("starship", 70.0, 70.0)
+        val Invoker : Invoker = Invoker(listOf())
+        var game : Game = GamePlayeable(Constants.WIDTH, Constants.HEIGHT, listOf(), listOf(), 0, 2, Invoker)
     }
 
     override fun start(primaryStage: Stage) {
@@ -34,20 +44,21 @@ class Starships() : Application() {
         facade.elements["asteroid-3"] =
             ElementModel("asteroid-3", 200.0, 200.0, 20.0, 30.0, 180.0, Elliptical, null)
 
-        facade.elements["starship"] = ElementModel(
-            "starship",
-            0.0,
-            0.0,
-            70.0,
-            70.0,
-            0.0,
-            Rectangular,
-            STARSHIP_IMAGE_REF
-        )
+        Invoker.addCommand(AccelerateCommand("W" , 1))
+        Invoker.addCommand(DesacelerateCommand("S" , 1))
+        Invoker.addCommand(RotateLeft("A" , 1))
+        Invoker.addCommand(RotateLeft("D" , 1))
 
-        facade.timeListenable.addEventListener(TimeListener(facade.elements))
+        game = game.setInvoker(Invoker)
+
+        game.setShip(listOf(EntityFactory().createShip("easy")))
+
+
+        facade.elements["starship"] = ShipAdapter().adapt(game.getShip().get(0))
+
+        facade.timeListenable.addEventListener(TimeListener(facade.elements, facade))
         facade.collisionsListenable.addEventListener(CollisionListener())
-        keyTracker.keyPressedListenable.addEventListener(KeyPressedListener(facade.elements["starship"]!!))
+        keyTracker.keyPressedListenable.addEventListener(KeyPressedListener(game))
 
         val scene = Scene(facade.view)
         keyTracker.scene = scene
@@ -67,7 +78,7 @@ class Starships() : Application() {
     }
 }
 
-class TimeListener(private val elements: Map<String, ElementModel>) : EventListener<TimePassed> {
+class TimeListener(private val elements: Map<String, ElementModel>, private val facade: ElementsViewFacade) : EventListener<TimePassed> {
     override fun handle(event: TimePassed) {
         elements.forEach {
             val (key, element) = it
@@ -95,14 +106,14 @@ class CollisionListener() : EventListener<Collision> {
 
 }
 
-class KeyPressedListener(private val starship: ElementModel): EventListener<KeyPressed> {
+class KeyPressedListener(private val game : Game): EventListener<KeyPressed> {
     override fun handle(event: KeyPressed) {
         val movement = ShipMovement()
         when(event.key) {
-            KeyCode.UP -> starship.y.set(starship.y.value - 5 )
-            KeyCode.DOWN -> starship.y.set(starship.y.value + 5 )
-            KeyCode.LEFT -> starship.x.set(starship.x.value - 5 )
-            KeyCode.RIGHT -> starship.x.set(starship.x.value + 5 )
+            KeyCode.W -> game.handleAction("W")
+            KeyCode.S -> game.handleAction("S")
+            KeyCode.A -> game.handleAction("A")
+            KeyCode.D -> game.handleAction("D")
             else -> {}
         }
     }

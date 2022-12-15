@@ -10,8 +10,8 @@ import game.gameState.Command.Invoker
 class GamePlayeable (private val width : Double, private val height : Double, private val entities : List<Moveable>, private val ships : List<Ship>, private val points : Int, private var EntityNumber : Int,  private val invoker : Invoker) : Game  {
     private val shipController : ShipMovement = ShipMovement()
 
-    override fun handleAction(keyMovement: KeyPressed): Game {
-        return invoker.execute(keyMovement.key.char, this)
+    override fun handleAction(key : String): Game {
+        return invoker.execute(key, this)
     }
 
     override fun getShip(): List<Ship> {
@@ -19,7 +19,7 @@ class GamePlayeable (private val width : Double, private val height : Double, pr
     }
 
     override fun getShipController(): ShipMovement {
-        TODO("Not yet implemented")
+        return shipController
     }
 
     override fun gameGetEntityNumber(): Int {
@@ -33,6 +33,10 @@ class GamePlayeable (private val width : Double, private val height : Double, pr
 
     override fun setShip(ship: List<Ship>): Game {
         return GamePlayeable(width, height, entities, ship, points, EntityNumber, invoker)
+    }
+
+    override fun setInvoker(invoker: Invoker): Game {
+        return GamePlayeable(width, height, entities, ships, points, EntityNumber, invoker)
     }
 
 

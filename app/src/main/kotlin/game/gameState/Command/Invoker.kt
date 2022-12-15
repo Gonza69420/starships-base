@@ -2,7 +2,7 @@ package game.gameState.Command
 
 import game.gameState.Game
 
-class Invoker( private var commands : List<GameCommand<*> >) {
+class Invoker( private var commands : List<GameCommand>) {
 
     fun execute(command : String, game : Game) : Game {
         for (c in commands) {
@@ -21,6 +21,11 @@ class Invoker( private var commands : List<GameCommand<*> >) {
                 commands += c
             }
         }
+        return Invoker(commands)
+    }
+
+    fun addCommand(command : GameCommand) : Invoker {
+        commands += command
         return Invoker(commands)
     }
 
