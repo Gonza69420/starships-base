@@ -5,20 +5,20 @@ import game.Entities.Ship
 
 class ShipMovement {
 
-    fun rotateLeft(ship : Ship) : Ship{
-        return Ship( ship.getGun(), ship.getHealth() ,ship.rotate( ship.getPosition().getRadians() + 1).getPosition(), ship.getVelocityX(), ship.getVelocityY(), ship.getId())
+    fun rotateLeft(ship : Ship, radians : Double) : Ship{
+        return Ship( ship.getGun(), ship.getHealth() ,ship.rotate( ship.getPosition().getRadians() + radians).getPosition(), ship.getVelocityX(), ship.getVelocityY(), ship.getId())
     }
 
-    fun rotateRight (ship : Ship) : Ship{
-        return Ship( ship.getGun(),ship.getHealth(), ship.rotate( ship.getPosition().getRadians() - 1).getPosition(), ship.getVelocityX(), ship.getVelocityY(), ship.getId())
+    fun rotateRight (ship : Ship, radians : Double) : Ship{
+        return Ship( ship.getGun(),ship.getHealth(), ship.rotate( ship.getPosition().getRadians() - radians).getPosition(), ship.getVelocityX(), ship.getVelocityY(), ship.getId())
     }
 
-    fun desacelerate(ship : Ship) : Ship {
-        return Ship(ship.getGun(),ship.getHealth(), ship.getPosition(), ship.getVelocityX() - 0.1 * Math.cos(ship.getPosition().getRadians()), ship.getVelocityY() - 0.1 * Math.sin(ship.getPosition().getRadians()), ship.getId())
+    fun desacelerate(ship : Ship, desacelerate : Double) : Ship {
+        return Ship(ship.getGun(),ship.getHealth(), ship.getPosition(), ship.getVelocityX() - desacelerate * Math.cos(ship.getPosition().getRadians()), ship.getVelocityY() - desacelerate * Math.sin(ship.getPosition().getRadians()), ship.getId())
     }
 
-    fun acelerate(ship : Ship) : Ship {
-        return Ship(ship.getGun(),ship.getHealth(), ship.getPosition(), ship.getVelocityX() + 0.1 * Math.cos(ship.getPosition().getRadians()), ship.getVelocityY() + 0.1 * Math.sin(ship.getPosition().getRadians()), ship.getId())
+    fun acelerate(ship : Ship, acelerate : Double) : Ship {
+        return Ship(ship.getGun(),ship.getHealth(), ship.getPosition(), ship.getVelocityX() + acelerate * Math.cos(ship.getPosition().getRadians()), ship.getVelocityY() + acelerate * Math.sin(ship.getPosition().getRadians()), ship.getId())
     }
 
     fun shoot(ship : Ship, id : Int) : List<Bullet> {

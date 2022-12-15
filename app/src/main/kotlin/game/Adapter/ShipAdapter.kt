@@ -19,7 +19,6 @@ class ShipAdapter : Adapter<Ship> {
             t.getPosition().getRadians(),
             ElementColliderType.Triangular,
             ImageRef("starship", 70.0, 70.0)
-
         )
     }
 

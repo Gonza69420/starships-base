@@ -6,6 +6,7 @@ class Constants {
         const val WIDTH: Double = 1000.0
         const val HEIGHT: Double = 1000.0
         const val SHIP_SPEED: Double = 0.69
+        const val SHIP_ROTATION_SPEED: Double = 0.2
         const val BULLET_SPEED: Double = 10.0
         const val BULLET_DAMAGE: Double = 100.0
         const val BULLET_SIZEX: Double = 3.0

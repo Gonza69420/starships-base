@@ -50,7 +50,7 @@ class EntityFactory {
         val initialPositionTopDown = Position((WIDTH - 0.1 * random3) + 0.1, 0.0)
         val finalPositionTopDown = Position((WIDTH - 0.1 * random4) + 0.1, HEIGHT)
         val initialPositionLeftRight = Position(0.0, (HEIGHT - 0.1 * random3) + 0.1)
-        val finalPositionLeftRight = Position(WIDTH, (HEIGHT - 0.1 * random3) + 0.1)
+        val finalPositionLeftRight = Position(WIDTH, (HEIGHT - 0.1 * random4) + 0.1)
         if (random < 0.2 ) {
             if (random < 0.05) {
                 return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(normalGun(id+1, MULTISHOOT_AMMO, 3 ), id+2), straightMovement(0.2,
