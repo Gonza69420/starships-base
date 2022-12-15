@@ -39,5 +39,9 @@ class straightMovement(val acceleration : Double, val initialVelocity : Double, 
         return acceleration
     }
 
+    fun getFinalPosition() : Position {
+        return finalPosition
+    }
+
 
 }
