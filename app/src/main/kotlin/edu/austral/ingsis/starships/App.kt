@@ -56,9 +56,9 @@ class Starships() : Application() {
 
         facade.elements["starship"] = ShipAdapter().adapt(game.getShip().get(0))
 
-        facade.timeListenable.addEventListener(TimeListener(facade.elements, facade, game))
+        facade.timeListenable.addEventListener(TimeListener(facade.elements, facade))
         facade.collisionsListenable.addEventListener(CollisionListener())
-        keyTracker.keyPressedListenable.addEventListener(KeyPressedListener(game))
+        keyTracker.keyPressedListenable.addEventListener(KeyPressedListener())
 
         val scene = Scene(facade.view)
         keyTracker.scene = scene
@@ -78,16 +78,17 @@ class Starships() : Application() {
     }
 }
 
-class TimeListener(private val elements: Map<String, ElementModel>, private val facade: ElementsViewFacade, private var game: Game) : EventListener<TimePassed> {
+class TimeListener(private val elements: Map<String, ElementModel>, private var facade: ElementsViewFacade) : EventListener<TimePassed> {
     override fun handle(event: TimePassed) {
-        game = game.moveEntities()
-        val gameObjects = game.getEntities()
+        val game = Starships.game.moveEntities()
+        val gameObjects = game.getShip()
 
         for (gameObject in gameObjects){
             if (gameObject is Ship){
                 facade.elements["starship"] = ShipAdapter().adapt(gameObject)
             }
         }
+        elements.forEach { facade.elements[it.key] = it.value }
     }
 }
 
@@ -98,14 +99,22 @@ class CollisionListener() : EventListener<Collision> {
 
 }
 
-class KeyPressedListener(private val game : Game): EventListener<KeyPressed> {
+class KeyPressedListener(): EventListener<KeyPressed> {
     override fun handle(event: KeyPressed) {
         val movement = ShipMovement()
         when(event.key) {
-            KeyCode.W -> game.handleAction("W")
-            KeyCode.S -> game.handleAction("S")
-            KeyCode.A -> game.handleAction("A")
-            KeyCode.D -> game.handleAction("D")
+            KeyCode.W -> {
+                Starships.game = Starships.game.handleAction("W")
+            }
+            KeyCode.S -> {
+                Starships.game = Starships.game.handleAction("S")
+            }
+            KeyCode.A -> {
+                Starships.game = Starships.game.handleAction("A")
+            }
+            KeyCode.D -> {
+                Starships.game = Starships.game.handleAction("D")
+            }
             else -> {}
         }
     }

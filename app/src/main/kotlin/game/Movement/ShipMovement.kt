@@ -18,7 +18,6 @@ class ShipMovement {
     }
 
     fun acelerate(ship : Ship, acelerate : Double) : Ship {
-        println(ship.getVelocityX() + acelerate * Math.cos(ship.getPosition().getRadians()))
         return Ship(ship.getGun(),ship.getHealth(), ship.getPosition(), ship.getVelocityX() + acelerate * Math.cos(ship.getPosition().getRadians()), ship.getVelocityY() + acelerate * Math.sin(ship.getPosition().getRadians()), ship.getId())
     }
 
