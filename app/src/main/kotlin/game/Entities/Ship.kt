@@ -42,6 +42,6 @@ class Ship(private val gun : Gun, private val health : Double, position: Positio
         if (isOutOfBounds(Constants.WIDTH, Constants.HEIGHT)){
             return Ship(gun, health, getPosition(), -getVelocityX(), -getVelocityY(), getId())
         }
-        return Ship(gun, health, Position(getPosition().getX() + getVelocityX(), getPosition().getY() + getVelocityY()), getVelocityX(), getVelocityY(), getId())
+        return Ship(gun, health, Position(getPosition().getX() + getVelocityX(), getPosition().getY() + getVelocityY(), getPosition().getAngle()), getVelocityX(), getVelocityY(), getId())
     }
 }

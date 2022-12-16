@@ -33,13 +33,13 @@ class EntityFactory {
 
     fun createShip(difficulty : String) : Ship {
         if (difficulty.equals("easy")){
-            return Ship(normalGun(1, 100, 1), SHIP_HEALTH_EASY, Position(500.0, 500.0, 180.0), 0.0, 0.0, 0)
+            return Ship(normalGun(1, 100, 1), SHIP_HEALTH_EASY, Position(500.0, 500.0, 0.0), 0.0, 0.0, 0)
         } else if (difficulty.equals("medium")){
-            return Ship(normalGun(1, 100, 1), SHIP_HEALTH_Medium, Position(500.0, 500.0, 180.0), 0.0, 0.0, 0)
+            return Ship(normalGun(1, 100, 1), SHIP_HEALTH_Medium, Position(500.0, 500.0, 0.0), 0.0, 0.0, 0)
         } else if (difficulty.equals("hard")){
-            return Ship(normalGun(1, 100, 1), SHIP_HEALTH_Hard, Position(500.0, 500.0, 180.0), 0.0, 0.0, 0)
+            return Ship(normalGun(1, 100, 1), SHIP_HEALTH_Hard, Position(500.0, 500.0, 0.0), 0.0, 0.0, 0)
         }
-        return Ship(normalGun(1, 100, 1), SHIP_HEALTH_Medium, Position(500.0, 500.0, 180.0), 0.0, 0.0, 0)
+        return Ship(normalGun(1, 100, 1), SHIP_HEALTH_Medium, Position(500.0, 500.0, 0.0), 0.0, 0.0, 0)
     }
 
     fun createBullet(ship: Ship, id : Int) : List<Bullet> {

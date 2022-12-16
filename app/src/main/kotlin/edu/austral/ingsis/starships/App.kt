@@ -12,6 +12,7 @@ import game.Position
 import game.gameState.Command.Commands.AccelerateCommand
 import game.gameState.Command.Commands.DesacelerateCommand
 import game.gameState.Command.Commands.RotateLeft
+import game.gameState.Command.Commands.RotateRight
 import game.gameState.Command.Invoker
 import game.gameState.Game
 import game.gameState.GamePlayeable
@@ -47,7 +48,7 @@ class Starships() : Application() {
         Invoker.addCommand(AccelerateCommand("W" , 1))
         Invoker.addCommand(DesacelerateCommand("S" , 1))
         Invoker.addCommand(RotateLeft("A" , 1))
-        Invoker.addCommand(RotateLeft("D" , 1))
+        Invoker.addCommand(RotateRight("D" , 1))
 
         game = game.setInvoker(Invoker)
 

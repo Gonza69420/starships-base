@@ -14,11 +14,11 @@ class ShipMovement {
     }
 
     fun desacelerate(ship : Ship, desacelerate : Double) : Ship {
-        return Ship(ship.getGun(),ship.getHealth(), ship.getPosition(), ship.getVelocityX() - desacelerate * Math.cos(ship.getPosition().getAngle()), ship.getVelocityY() - desacelerate * Math.sin(ship.getPosition().getAngle()), ship.getId())
+        return Ship(ship.getGun(),ship.getHealth(), ship.getPosition(), ship.getVelocityX() - desacelerate * Math.sin(Math.toRadians(ship.getPosition().getAngle())), ship.getVelocityY() + desacelerate * Math.cos(Math.toRadians(ship.getPosition().getAngle())), ship.getId())
     }
 
     fun acelerate(ship : Ship, acelerate : Double) : Ship {
-        return Ship(ship.getGun(),ship.getHealth(), ship.getPosition(), ship.getVelocityX() + acelerate * Math.cos(ship.getPosition().getAngle()), ship.getVelocityY() + acelerate * Math.sin(ship.getPosition().getAngle()), ship.getId())
+        return Ship(ship.getGun(),ship.getHealth(), ship.getPosition(), ship.getVelocityX() + acelerate * Math.sin(ship.getPosition().getAngle()), ship.getVelocityY() - acelerate * Math.cos(ship.getPosition().getAngle()), ship.getId())
     }
 
     fun shoot(ship : Ship, id : Int) : List<Bullet> {

@@ -27,7 +27,7 @@ open class Moveable(private val position: Position, private val velocityX : Doub
     }
 
     fun rotate(radians : Double) : Moveable {
-        return Moveable(Position(position.getX(), position.getY(), position.getAngle() + radians), velocityX, velocityY, getId())
+        return Moveable(Position(position.getX(), position.getY(), radians), velocityX, velocityY, getId())
     }
 
     fun setVelocityX(velocityX : Double) : Moveable {

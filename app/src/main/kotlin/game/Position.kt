@@ -4,7 +4,6 @@ class Position(private val x :  Double , private val  y : Double, private var an
 
     constructor( x : Double ,  y : Double) : this( x ,  y , 0.0) {
         val temp = Math.acos(x / Math.sqrt((x *  x  +  y *  y).toDouble()))
-        angle = if ( temp > 2*Math.PI) temp - 2 * Math.PI else temp
     }
 
     fun getX() : Double {
@@ -22,4 +21,5 @@ class Position(private val x :  Double , private val  y : Double, private var an
     fun getRadianFromAngle() : Double {
         return angle * Math.PI / 180
     }
+
 }

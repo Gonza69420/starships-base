@@ -11,13 +11,12 @@ class Geometry {
         return Position(x, y)
     }
 
-
-    fun getAngleFromRadians(radians: Double): Double {
-        return radians * 180 / Math.PI
+    open fun getRadianesFromAngle(angle : Double) : Double {
+        return angle * Math.PI / 180
     }
 
-    fun getRadiansFromAngle(angle: Double): Double {
-        return angle * Math.PI / 180
+    open fun getAngleFromRadians(radians : Double) : Double {
+        return radians * 180 / Math.PI
     }
 
 }
