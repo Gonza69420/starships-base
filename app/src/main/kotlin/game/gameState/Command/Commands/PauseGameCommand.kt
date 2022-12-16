@@ -2,10 +2,11 @@ package game.gameState.Command.Commands
 
 import game.gameState.Command.GameCommand
 import game.gameState.Game
+import game.gameState.PausedGame
 
-class PauseGameCommand(private val key : String, private val player: Int) : GameCommand {
+class PauseGameCommand(private val key : String) : GameCommand {
     override fun execute(game: Game): Game {
-        TODO("Not yet implemented")
+        return PausedGame(key, game)
     }
 
     override fun getKey(): String {
@@ -13,10 +14,10 @@ class PauseGameCommand(private val key : String, private val player: Int) : Game
     }
 
     override fun setKey(key : String): GameCommand {
-        return PauseGameCommand(key, player)
+        return PauseGameCommand(key)
     }
 
     override fun getPlayer(): Int {
-        return player
+        return 0
     }
 }

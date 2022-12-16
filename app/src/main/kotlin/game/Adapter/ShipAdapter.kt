@@ -20,7 +20,7 @@ class ShipAdapter : Adapter<Ship> {
             Constants.SHIP_SIZE.toDouble(),
             geometry.getAngleFromRadians(t.getPosition().getAngle() ) + 270,
             ElementColliderType.Triangular,
-            ImageRef("starship", Constants.SHIP_SIZE.toDouble(), Constants.SHIP_SIZE.toDouble())
+            ImageRef("starship2", Constants.SHIP_SIZE.toDouble(), Constants.SHIP_SIZE.toDouble())
         )
     }
 

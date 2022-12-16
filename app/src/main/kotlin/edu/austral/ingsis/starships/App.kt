@@ -9,6 +9,7 @@ import game.Constants.Constants
 import game.Entities.Asteroid.Asteroid
 import game.Entities.Gun.normalGun
 import game.Entities.Moveable
+
 import game.Entities.Ship
 import game.Factory.EntityFactory
 import game.Movement.ShipMovement
@@ -19,8 +20,16 @@ import game.gameState.Game
 import game.gameState.GamePlayeable
 import javafx.application.Application
 import javafx.application.Application.launch
+import javafx.geometry.Pos
+import javafx.scene.Cursor
 import javafx.scene.Scene
+import javafx.scene.control.ChoiceBox
+import javafx.scene.control.Label
 import javafx.scene.input.KeyCode
+import javafx.scene.layout.HBox
+import javafx.scene.layout.StackPane
+import javafx.scene.layout.VBox
+import javafx.scene.paint.Color.PURPLE
 import javafx.stage.Stage
 
 fun main() {
@@ -33,26 +42,35 @@ class Starships() : Application() {
     private val keyTracker = KeyTracker()
 
     companion object {
-        val STARSHIP_IMAGE_REF = ImageRef("starship", 70.0, 70.0)
-        val Invoker : Invoker = Invoker(listOf())
-        var game : Game = GamePlayeable(Constants.WIDTH, Constants.HEIGHT, listOf(), listOf(), 0, 2, Invoker)
-        val entityFactory : EntityFactory = EntityFactory()
+        val Invoker: Invoker = Invoker(listOf())
+        var game: Game = GamePlayeable(Constants.WIDTH, Constants.HEIGHT, listOf(), listOf(), 0, 2, Invoker)
+        val entityFactory: EntityFactory = EntityFactory()
     }
 
     override fun start(primaryStage: Stage) {
+        Invoker.addCommand(AccelerateCommand(Constants.PLAYER1_ACCELERATE, 1))
+        Invoker.addCommand(DesacelerateCommand(Constants.PLAYER1_REVERSE, 1))
+        Invoker.addCommand(RotateLeft(Constants.PLAYER1_ROTATE_LEFT, 1))
+        Invoker.addCommand(RotateRight(Constants.PLAYER1_ROTATE_RIGHT, 1))
+        Invoker.addCommand(ShootCommand(Constants.PLAYER1_SHOOT, 1))
+        Invoker.addCommand(PauseGameCommand(Constants.PAUSEBUTTON))
 
-        Invoker.addCommand(AccelerateCommand("W" , 1))
-        Invoker.addCommand(DesacelerateCommand("S" , 1))
-        Invoker.addCommand(RotateLeft("D" , 1))
-        Invoker.addCommand(RotateRight("A" , 1))
-        Invoker.addCommand(ShootCommand("SPACE" , 1))
+
+        Invoker.addCommand(AccelerateCommand(Constants.PLAYER2_ACCELERATE, 2))
+        Invoker.addCommand(DesacelerateCommand( Constants.PLAYER2_REVERSE, 2))
+        Invoker.addCommand(RotateLeft(Constants.PLAYER2_ROTATE_LEFT, 2))
+        Invoker.addCommand(RotateRight(Constants.PLAYER2_ROTATE_RIGHT, 2))
+        Invoker.addCommand(ShootCommand(Constants.PLAYER2_SHOOT, 2))
+
+
 
         game = game.setInvoker(Invoker)
 
-        game = game.setShip(listOf(EntityFactory().createShip("easy")))
+        game = game.setShip(listOf(EntityFactory().createShip("easy", 0), EntityFactory().createShip("easy", 2)))
 
 
-        facade.elements["starship"] = ShipAdapter().adapt(game.getShip().get(0))
+        facade.elements["0"] = ShipAdapter().adapt(game.getShip().get(0))
+        facade.elements["2"] = ShipAdapter().adapt(game.getShip().get(1))
 
         facade.timeListenable.addEventListener(TimeListener(facade.elements, facade))
         facade.collisionsListenable.addEventListener(CollisionListener())
@@ -74,6 +92,8 @@ class Starships() : Application() {
         facade.stop()
         keyTracker.stop()
     }
+
+
 }
 
  class TimeListener(private val elements: Map<String, ElementModel>, private var facade: ElementsViewFacade) : EventListener<TimePassed> {
@@ -81,6 +101,9 @@ class Starships() : Application() {
 
         var gameObjects : MutableList<Moveable> = mutableListOf()
         for (entity in Starships.game.getShip()) {
+            if (!entity.isAlive()){
+                System.exit(0)
+            }
             gameObjects.add(entity)
         }
 
@@ -99,10 +122,9 @@ class Starships() : Application() {
         for (entity in Starships.game.getEntities()) {
             gameObjects.add(entity)
         }
-
         for (gameObject in gameObjects){
             if (gameObject is Ship){
-                facade.elements["starship"] = ShipAdapter().adapt(gameObject)
+                facade.elements[gameObject.getId().toString()] = ShipAdapter().adapt(gameObject)
             }
             if (gameObject.getType().equals("Asteroid")){
                 facade.elements[gameObject.getId().toString()] = AsteroidAdapter(gameObject.getSize()).adapt(gameObject)
@@ -112,6 +134,13 @@ class Starships() : Application() {
             }
             if (gameObject.getType().equals("normalBullet")){
                 facade.elements[gameObject.getId().toString()] = BulletAdapater(Constants.BULLET_SIZEX, Constants.BULLET_SIZEY, gameObject.getType()).adapt(gameObject)
+                if (gameObject.isOutOfBounds(Constants.WIDTH, Constants.HEIGHT)){
+                    facade.elements[gameObject.getId().toString()] = null
+                }
+            }
+
+            if(gameObject.getType().equals("Laser")){
+                facade.elements[gameObject.getId().toString()] = BulletAdapater(Constants.LASER_SIZEX, Constants.LASER_SIZEY, gameObject.getType()).adapt(gameObject)
                 if (gameObject.isOutOfBounds(Constants.WIDTH, Constants.HEIGHT)){
                     facade.elements[gameObject.getId().toString()] = null
                 }
@@ -126,7 +155,7 @@ class Starships() : Application() {
 
 class CollisionListener() : EventListener<Collision> {
     override fun handle(event: Collision) {
-        println("${event.element1Id} ${event.element2Id}")
+        Starships.game = Starships.game.handleCollision(Starships.game.getEntityFromId(event.element1Id.toInt()), Starships.game.getEntityFromId(event.element2Id.toInt()))
     }
 
 }
@@ -134,8 +163,9 @@ class CollisionListener() : EventListener<Collision> {
 class KeyPressedListener(): EventListener<KeyPressed> {
     override fun handle(event: KeyPressed) {
         val movement = ShipMovement()
-        when(event.key) {
-            KeyCode.W -> {
+       // when(event.key) {
+            Starships.game = Starships.game.handleAction(event.key.toString())
+            /*KeyCode.W -> {
                 Starships.game = Starships.game.handleAction("W")
             }
             KeyCode.S -> {
@@ -150,8 +180,28 @@ class KeyPressedListener(): EventListener<KeyPressed> {
             KeyCode.SPACE -> {
                 Starships.game = Starships.game.handleAction("SPACE")
             }
-            else -> {}
-        }
+            KeyCode.I -> {
+                Starships.game = Starships.game.handleAction("I")
+            }
+            KeyCode.K -> {
+                Starships.game = Starships.game.handleAction("K")
+            }
+            KeyCode.J -> {
+                Starships.game = Starships.game.handleAction("J")
+            }
+            KeyCode.L -> {
+                Starships.game = Starships.game.handleAction("L")
+            }
+            KeyCode.O -> {
+                Starships.game = Starships.game.handleAction("O")
+            }
+            KeyCode.P -> {
+
+            }
+
+             */
+           // else -> {}
+        //}
     }
 
 }

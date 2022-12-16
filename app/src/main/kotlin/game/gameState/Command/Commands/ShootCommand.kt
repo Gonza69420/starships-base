@@ -8,6 +8,7 @@ class ShootCommand(private val key:String, private val player : Int) : GameComma
     override fun execute(game: Game): Game {
         var gamee : Game = game
         val bulletList = game.getShipController().shoot(game.getShip().get(player - 1), game.gameGetEntityNumber())
+        gamee.setPlayer(player, game.getShip().get(player - 1).wasteAmmo())
         for (bullet in bulletList) {
             gamee = game.generateEntity(bullet)
         }

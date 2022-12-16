@@ -12,7 +12,7 @@ class MegaBomb(private val ammo : Int, private val screenXSize : Double, private
     override fun getBullet(): Bullet {
         return Bullet(
             Constants.BOMB_DAMAGE, Constants.BOMB_SIZEX, Constants.BOMB_SIZEY,
-            Constants.BOMB_SPEED, Position(0.0, 0.0), 0.0, 0.0, 0, "Bomb")
+            Constants.BOMB_SPEED, Position(0.0, 0.0), 0.0, 0.0, 0, "Bomb", listOf())
 
     }
 
@@ -21,7 +21,7 @@ class MegaBomb(private val ammo : Int, private val screenXSize : Double, private
     }
 
     override fun shoot(position: Position, id : Int): List<Bullet> {
-        return listOf(Bullet(getBullet().getDamage(), getBullet().getSizeX(), getBullet().getSizeY(), Constants.BOMB_SPEED, position, Constants.BOMB_SPEED, Constants.BOMB_SPEED, id , "Bomb"))
+        return listOf(Bullet(getBullet().getDamage(), getBullet().getSizeX(), getBullet().getSizeY(), Constants.BOMB_SPEED, position, Constants.BOMB_SPEED, Constants.BOMB_SPEED, id , "Bomb", listOf()))
     }
 
     override fun wasteAmmo(): Gun {

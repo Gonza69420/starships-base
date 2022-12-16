@@ -1,8 +1,11 @@
 package game.Collision
 
-interface Observable {
+import game.Entities.Moveable
 
-    fun registerObserver(observer: Observer<*>)
-    fun removeObserver(observer: Observer<*>)
-    fun notifyObservers()
+interface Observable  {
+
+    fun registerObserver(observer: Observer<*>) : Moveable
+    fun removeObserver(observer: Observer<*>) : Moveable
+    fun notifyObservers(collisionWith : Moveable) : Moveable
+    fun getObservers() : List<Observer<*>>
 }

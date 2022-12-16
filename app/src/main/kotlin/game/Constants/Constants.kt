@@ -12,10 +12,10 @@ class Constants {
         const val BULLET_SIZEX: Double = 20.0
         const val BULLET_SIZEY: Double = 30.0
         const val MULTISHOOT_AMMO : Int = 15
-        const val LASER_SIZEX: Double = 3.0
-        const val LASER_SIZEY: Double = 1000.0
+        const val LASER_SIZEX: Double = 10.0
+        const val LASER_SIZEY: Double = 80.0
         const val LASER_DAMAGE: Double = 150.0
-        const val LASER_SPEED: Double = 0.0
+        const val LASER_SPEED: Double = 50.0
         const val LASER_AMMO: Int = 10
         const val BOMB_DAMAGE: Double = 500.0
         const val BOMB_SIZEX: Double = WIDTH
@@ -40,5 +40,19 @@ class Constants {
         const val MAXASTEROIDS : Int = 10
         const val MAXENTITIES : Int = 20
         const val SPAWNASTEROIDCHANCE : Double = 0.05
+
+        const val PLAYER1_ACCELERATE : String = "W"
+        const val PLAYER1_ROTATE_LEFT : String = "A"
+        const val PLAYER1_ROTATE_RIGHT : String = "D"
+        const val PLAYER1_SHOOT : String = "SPACE"
+        const val PLAYER1_REVERSE : String = "S"
+
+        const val PLAYER2_ACCELERATE : String = "I"
+        const val PLAYER2_ROTATE_LEFT : String = "J"
+        const val PLAYER2_ROTATE_RIGHT : String = "L"
+        const val PLAYER2_SHOOT : String = "O"
+        const val PLAYER2_REVERSE : String = "K"
+
+        const val PAUSEBUTTON : String = "P"
     }
 }

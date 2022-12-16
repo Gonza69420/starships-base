@@ -1,6 +1,9 @@
 package game.Factory
 
 
+import game.Collision.Observer
+import game.Collision.Observers.DamageCollision
+import game.Collision.Observers.PowerUpCollision
 import game.Constants.Constants.Companion.ASTEROID_HEALTH_MAX
 import game.Constants.Constants.Companion.ASTEROID_HEALTH_MIN
 import game.Constants.Constants.Companion.ASTEROID_POINTS
@@ -9,7 +12,6 @@ import game.Constants.Constants.Companion.ASTEROID_SIZE_MIN
 import game.Constants.Constants.Companion.ASTEROID_SPEED_MAX
 import game.Constants.Constants.Companion.ASTEROID_SPEED_MIN
 import game.Constants.Constants.Companion.BOMB_AMMO
-import game.Constants.Constants.Companion.BOMB_SPEED
 import game.Constants.Constants.Companion.HEIGHT
 import game.Constants.Constants.Companion.LASER_AMMO
 import game.Constants.Constants.Companion.MULTISHOOT_AMMO
@@ -25,21 +27,24 @@ import game.Entities.Bullet
 import game.Entities.Gun.Laser
 import game.Entities.Gun.MegaBomb
 import game.Entities.Gun.normalGun
+import game.Entities.Moveable
 import game.Entities.Ship
 import game.Movement.straightMovement
 import game.Position
 
 class EntityFactory {
 
-    fun createShip(difficulty : String) : Ship {
+    fun createShip(difficulty : String, id : Int) : Ship {
         if (difficulty.equals("easy")){
-            return Ship(normalGun(1, 100, 1), SHIP_HEALTH_EASY, Position(500.0, 500.0, 0.0), 0.0, 0.0, 0)
+            return Ship(Laser(100 , id+1), SHIP_HEALTH_EASY, Position(500.0, 500.0, 0.0), 0.0, 0.0, id,
+                listOf(DamageCollision(listOf("Asteroid")), PowerUpCollision()) as List<Observer<Moveable>>
+            )
         } else if (difficulty.equals("medium")){
-            return Ship(normalGun(1, 100, 1), SHIP_HEALTH_Medium, Position(500.0, 500.0, 0.0), 0.0, 0.0, 0)
+            return Ship(normalGun(id+1, 100, 1), SHIP_HEALTH_Medium, Position(500.0, 500.0, 0.0), 0.0, 0.0, id, listOf(DamageCollision(listOf("Asteroid")), PowerUpCollision()) as List<Observer<Moveable>>)
         } else if (difficulty.equals("hard")){
-            return Ship(normalGun(1, 100, 1), SHIP_HEALTH_Hard, Position(500.0, 500.0, 0.0), 0.0, 0.0, 0)
+            return Ship(normalGun(id+1, 100, 1), SHIP_HEALTH_Hard, Position(500.0, 500.0, 0.0), 0.0, 0.0, id, listOf(DamageCollision(listOf("Asteroid")), PowerUpCollision()) as List<Observer<Moveable>>)
         }
-        return Ship(normalGun(1, 100, 1), SHIP_HEALTH_Medium, Position(500.0, 500.0, 0.0), 0.0, 0.0, 0)
+        return Ship(normalGun(id+1, 100, 1), SHIP_HEALTH_Medium, Position(500.0, 500.0, 0.0), 0.0, 0.0, id, listOf(DamageCollision(listOf("Asteroid")), PowerUpCollision()) as List<Observer<Moveable>>)
     }
 
     fun createBullet(ship: Ship, id : Int) : List<Bullet> {
@@ -53,40 +58,52 @@ class EntityFactory {
         val finalPositionTopDown = Position(WIDTH, ((HEIGHT - 0.1) * random4) + 0.1)
         if (random < 0.2 ) {
             if (random < 0.05) {
-                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(normalGun(id+1, MULTISHOOT_AMMO, 3 ), id+2), straightMovement(0.2,
-                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, finalPositionTopDown), initialPositionTopDown, 0.0, 0.0, id)
+                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(normalGun(id+1, MULTISHOOT_AMMO, 3 ), id+2), straightMovement(0.2,
+                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, finalPositionTopDown), initialPositionTopDown, 0.0, 0.0, id, listOf(DamageCollision(
+                    listOf("Laser" , "Bomb", "normalBullet")
+                )), listOf()
+                )
             }else if (random < 0.1){
-                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(normalGun(id+1, MULTISHOOT_AMMO, 3 ), id+2), straightMovement(0.2,
-                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionLeftRight, finalPositionLeftRight), initialPositionLeftRight, 0.0, 0.0, id)
+                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,   ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(normalGun(id+1, MULTISHOOT_AMMO, 3 ), id+2), straightMovement(0.2,
+                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionLeftRight, finalPositionLeftRight), initialPositionLeftRight, 0.0, 0.0, id, listOf(DamageCollision( listOf("Laser" , "Bomb", "normalBullet"))), listOf()
+                )
         }else if (random < 0.14){
-                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(Laser(id+1, LASER_AMMO ), id+2), straightMovement(0.2,
-                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, Position((WIDTH - 0.1 * random2) + 0.1, HEIGHT)), initialPositionTopDown, 0.0, 0.0, id)
+                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(Laser(id+1, LASER_AMMO ), id+2), straightMovement(0.2,
+                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, Position((WIDTH - 0.1 * random2) + 0.1, HEIGHT)), initialPositionTopDown, 0.0, 0.0, id, listOf(DamageCollision( listOf("Laser" , "Bomb", "normalBullet"))), listOf()
+                )
             }else if (random < 0.18) {
-                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(Laser(id+1, LASER_AMMO ), id+2), straightMovement(0.2,
-                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionLeftRight, finalPositionLeftRight), finalPositionLeftRight, 0.0, 0.0, id)
+                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,   ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(Laser(id+1, LASER_AMMO ), id+2), straightMovement(0.2,
+                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionLeftRight, finalPositionLeftRight), finalPositionLeftRight, 0.0, 0.0, id,listOf(DamageCollision( listOf("Laser" , "Bomb", "normalBullet"))), listOf()
+                )
             }else if (random < 0.2){
-                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(MegaBomb(
+                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroidPowerUp(MegaBomb(
                     BOMB_AMMO, WIDTH, HEIGHT, id+1 ), id+2), straightMovement(0.2,
-                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, finalPositionTopDown), initialPositionTopDown, 0.0, 0.0, id)
+                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, finalPositionTopDown), initialPositionTopDown, 0.0, 0.0, id, listOf(DamageCollision( listOf("Laser" , "Bomb", "normalBullet"))), listOf()
+                )
             }
         } else if (random < 0.4){
             if (random < 0.2){
-                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, divideAsteroid(3), straightMovement(0.2,
-                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, finalPositionTopDown), initialPositionTopDown, 0.0, 0.0, id)
+                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  ASTEROID_SIZE_MIN, ASTEROID_POINTS, divideAsteroid(3), straightMovement(0.2,
+                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, finalPositionTopDown), initialPositionTopDown, 0.0, 0.0, id, listOf(DamageCollision( listOf("Laser" , "Bomb", "normalBullet"))), listOf()
+                )
             }else{
-                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, divideAsteroid(3), straightMovement(0.2,
-                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionLeftRight, finalPositionLeftRight), initialPositionLeftRight, 0.0, 0.0, id)
+                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,   ASTEROID_SIZE_MIN, ASTEROID_POINTS, divideAsteroid(3), straightMovement(0.2,
+                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionLeftRight, finalPositionLeftRight), initialPositionLeftRight, 0.0, 0.0, id, listOf(DamageCollision( listOf("Laser" , "Bomb", "normalBullet"))), listOf()
+                )
             }
         }else{
             if (random < 0.7){
-                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroid(), straightMovement(0.2,
-                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, finalPositionTopDown), initialPositionTopDown, 0.0, 0.0, id)
+                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,   ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroid(), straightMovement(0.2,
+                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, finalPositionTopDown), initialPositionTopDown, 0.0, 0.0, id, listOf(DamageCollision( listOf("Laser" , "Bomb", "normalBullet"))), listOf()
+                )
             }else{
-                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroid(), straightMovement(0.2,
-                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionLeftRight, finalPositionLeftRight), initialPositionLeftRight, 0.0, 0.0, id)
+                return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroid(), straightMovement(0.2,
+                    (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionLeftRight, finalPositionLeftRight), initialPositionLeftRight, 0.0, 0.0, id, listOf(DamageCollision( listOf("Laser" , "Bomb", "normalBullet"))), listOf()
+                )
             }
         }
-        return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  (ASTEROID_SIZE_MAX - ASTEROID_SIZE_MIN) * random4 + ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroid(), straightMovement(0.2,
-            (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, finalPositionTopDown), initialPositionTopDown, 0.0, 0.0, id)
+        return Asteroid((ASTEROID_HEALTH_MAX - ASTEROID_HEALTH_MIN * random4) + ASTEROID_HEALTH_MIN,  ASTEROID_SIZE_MIN, ASTEROID_POINTS, destroyAsteroid(), straightMovement(0.2,
+            (ASTEROID_SPEED_MAX - ASTEROID_SPEED_MIN) * random2 + ASTEROID_SPEED_MIN, initialPositionTopDown, finalPositionTopDown), initialPositionTopDown, 0.0, 0.0, id, listOf(DamageCollision( listOf("Laser" , "Bomb", "normalBullet"))), listOf()
+        )
     }
 }
