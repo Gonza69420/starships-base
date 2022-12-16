@@ -8,11 +8,11 @@ import game.Movement.straightMovement
 import game.Position
 
 class MegaBomb(private val ammo : Int, private val screenXSize : Double, private val screenYSize: Double, id: Int) : Gun,
-    Entity(id, "Gun") {
+    Entity(id, "Bomb") {
     override fun getBullet(): Bullet {
         return Bullet(
             Constants.BOMB_DAMAGE, Constants.BOMB_SIZEX, Constants.BOMB_SIZEY,
-            straightMovement( 0.0, Constants.BOMB_SPEED , Position(0.0, 0.0), Position(10.0,10.0)), Position(0.0, 0.0), 0.0, 0.0, 0)
+            Constants.BOMB_SPEED, Position(0.0, 0.0), 0.0, 0.0, 0, "Bomb")
 
     }
 
@@ -21,7 +21,7 @@ class MegaBomb(private val ammo : Int, private val screenXSize : Double, private
     }
 
     override fun shoot(position: Position, id : Int): List<Bullet> {
-        return listOf(Bullet(getBullet().getDamage(), getBullet().getSizeX(), getBullet().getSizeY(), straightMovement(0.0 , Constants.BOMB_SPEED , position, Geometry().fromInitialPointGetFinalPoint(position) ), position, 0.0, 0.0, id ))
+        return listOf(Bullet(getBullet().getDamage(), getBullet().getSizeX(), getBullet().getSizeY(), Constants.BOMB_SPEED, position, Constants.BOMB_SPEED, Constants.BOMB_SPEED, id , "Bomb"))
     }
 
     override fun wasteAmmo(): Gun {

@@ -3,6 +3,7 @@ package edu.austral.ingsis.starships
 import edu.austral.ingsis.starships.ui.*
 import edu.austral.ingsis.starships.ui.ElementColliderType.*
 import game.Adapter.AsteroidAdapter
+import game.Adapter.BulletAdapater
 import game.Adapter.ShipAdapter
 import game.Constants.Constants
 import game.Entities.Asteroid.Asteroid
@@ -12,10 +13,7 @@ import game.Entities.Ship
 import game.Factory.EntityFactory
 import game.Movement.ShipMovement
 import game.Position
-import game.gameState.Command.Commands.AccelerateCommand
-import game.gameState.Command.Commands.DesacelerateCommand
-import game.gameState.Command.Commands.RotateLeft
-import game.gameState.Command.Commands.RotateRight
+import game.gameState.Command.Commands.*
 import game.gameState.Command.Invoker
 import game.gameState.Game
 import game.gameState.GamePlayeable
@@ -47,6 +45,7 @@ class Starships() : Application() {
         Invoker.addCommand(DesacelerateCommand("S" , 1))
         Invoker.addCommand(RotateLeft("D" , 1))
         Invoker.addCommand(RotateRight("A" , 1))
+        Invoker.addCommand(ShootCommand("SPACE" , 1))
 
         game = game.setInvoker(Invoker)
 
@@ -111,6 +110,12 @@ class Starships() : Application() {
                     facade.elements[gameObject.getId().toString()] = null
                 }
             }
+            if (gameObject.getType().equals("normalBullet")){
+                facade.elements[gameObject.getId().toString()] = BulletAdapater(Constants.BULLET_SIZEX, Constants.BULLET_SIZEY, gameObject.getType()).adapt(gameObject)
+                if (gameObject.isOutOfBounds(Constants.WIDTH, Constants.HEIGHT)){
+                    facade.elements[gameObject.getId().toString()] = null
+                }
+            }
         }
 
         Starships.game = Starships.game.moveEntities()
@@ -141,6 +146,9 @@ class KeyPressedListener(): EventListener<KeyPressed> {
             }
             KeyCode.D -> {
                 Starships.game = Starships.game.handleAction("D")
+            }
+            KeyCode.SPACE -> {
+                Starships.game = Starships.game.handleAction("SPACE")
             }
             else -> {}
         }

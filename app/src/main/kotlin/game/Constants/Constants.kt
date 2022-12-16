@@ -9,8 +9,8 @@ class Constants {
         const val SHIP_ROTATION_SPEED: Double = 0.2
         const val BULLET_SPEED: Double = 10.0
         const val BULLET_DAMAGE: Double = 100.0
-        const val BULLET_SIZEX: Double = 3.0
-        const val BULLET_SIZEY: Double = 5.0
+        const val BULLET_SIZEX: Double = 20.0
+        const val BULLET_SIZEY: Double = 30.0
         const val MULTISHOOT_AMMO : Int = 15
         const val LASER_SIZEX: Double = 3.0
         const val LASER_SIZEY: Double = 1000.0

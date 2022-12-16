@@ -7,9 +7,9 @@ import game.Entities.Entity
 import game.Geometry
 import game.Position
 
-class normalGun(id: Int, private val ammo : Int, private val guns : Int) : Gun, Entity(id, "Gun") {
+class normalGun(id: Int, private val ammo : Int, private val guns : Int) : Gun, Entity(id, "normalBullet") {
     override fun getBullet(): Bullet {
-        return Bullet(Constants.BULLET_DAMAGE, Constants.BULLET_SIZEX, Constants.BOMB_SIZEY, straightMovement( 0.0, Constants.BULLET_SPEED , Position(0.0, 0.0), Position(10.0,10.0)), Position(0.0, 0.0), 0.0, 0.0, 0)
+        return Bullet(Constants.BULLET_DAMAGE, Constants.BULLET_SIZEX, Constants.BULLET_SIZEY,Constants.BULLET_SPEED, Position(0.0, 0.0), 0.0, 0.0, 0, "normalBullet")
     }
 
     override fun getAmmo(): Int {
@@ -17,9 +17,9 @@ class normalGun(id: Int, private val ammo : Int, private val guns : Int) : Gun, 
     }
 
     override fun shoot(position: Position, id : Int): List<Bullet> {
-        val list = listOf<Bullet>()
-        for (i in 0..guns) {
-            list.plus(Bullet(getBullet().getDamage(), getBullet().getSizeX(), getBullet().getSizeY(), straightMovement(0.0 , 10.0 , position, Geometry().fromInitialPointGetFinalPoint(position) ), position, 0.0, 0.0, id + i))
+        val list = mutableListOf<Bullet>()
+        for (i in 1..guns) {
+            list.add(Bullet(getBullet().getDamage(), getBullet().getSizeX(), getBullet().getSizeY(),Constants.BULLET_SPEED, position, 0.0, 0.0, id + i, "normalBullet"))
         }
         return list
     }

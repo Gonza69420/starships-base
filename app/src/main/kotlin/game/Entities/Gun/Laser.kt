@@ -8,9 +8,9 @@ import game.Geometry
 import game.Movement.straightMovement
 import game.Position
 
-class Laser(private val ammo: Int, id: Int) : Gun, Entity(id, "Gun") {
+class Laser(private val ammo: Int, id: Int) : Gun, Entity(id, "Laser") {
     override fun getBullet(): Bullet {
-        return Bullet(Constants.LASER_DAMAGE, Constants.LASER_SIZEX, Constants.LASER_SIZEY,straightMovement( 0.0, Constants.LASER_SPEED , Position(0.0, 0.0), Position(10.0,10.0)), Position(0.0, 0.0), 0.0, 0.0, 0)
+        return Bullet(Constants.LASER_DAMAGE, Constants.LASER_SIZEX, Constants.LASER_SIZEY,Constants.LASER_SPEED, Position(10.0,10.0) , 0.0, 0.0, 0, "Laser")
     }
 
     override fun getAmmo(): Int {
@@ -18,7 +18,7 @@ class Laser(private val ammo: Int, id: Int) : Gun, Entity(id, "Gun") {
     }
 
     override fun shoot(position: Position, id : Int): List<Bullet> {
-        return listOf(Bullet(getBullet().getDamage(), getBullet().getSizeX(), getBullet().getSizeY(), straightMovement(0.0 , Constants.LASER_SPEED , position, Geometry().fromInitialPointGetFinalPoint(position) ), position, 0.0, 0.0, id ))
+        return listOf(Bullet(getBullet().getDamage(), getBullet().getSizeX(), getBullet().getSizeY(), Constants.LASER_SPEED, position, 0.0, 0.0, id, "Laser" ))
     }
 
     override fun wasteAmmo(): Gun {
