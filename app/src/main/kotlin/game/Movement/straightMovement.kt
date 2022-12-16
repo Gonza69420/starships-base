@@ -7,10 +7,11 @@ class straightMovement(val acceleration : Double, val initialVelocity : Double, 
     Movement {
 
     override fun move(moveable: Moveable): Moveable {
-        return if (moveable.getVelocityX() == 0.0 && moveable.getVelocityY() == 0.0) {
-            moveable.setVelocityY(getInitialVelocityY())
+        if (moveable.getVelocityX() == 0.0 && moveable.getVelocityY() == 0.0) {
+            val moveeable = moveable.setVelocityY(getInitialVelocityY())
+            return moveeable.setVelocityX(getInitialVelocityX())
         }else{
-            accelerate(moveable)
+            return accelerate(moveable)
         }
     }
 
@@ -41,6 +42,5 @@ class straightMovement(val acceleration : Double, val initialVelocity : Double, 
     fun getFinalPosition() : Position {
         return finalPosition
     }
-
 
 }

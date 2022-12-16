@@ -50,4 +50,13 @@ class Asteroid(private val health : Double, private val size : Double,
         return asteroidMovement
     }
 
+    fun rotateAsteroid(radians : Double) : Asteroid {
+        return Asteroid(health, size, points, destroyStrategy, asteroidMovement,
+            Position(getPosition().getX(), getPosition().getY(), radians), getVelocityX(), getVelocityY(), getId())
+    }
+
+    override fun updatePosition(): Moveable {
+        return rotateAsteroid(0.1)
+    }
+
 }

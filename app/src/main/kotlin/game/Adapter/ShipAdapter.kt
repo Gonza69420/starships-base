@@ -3,6 +3,7 @@ package game.Adapter
 import edu.austral.ingsis.starships.ui.ElementColliderType
 import edu.austral.ingsis.starships.ui.ElementModel
 import edu.austral.ingsis.starships.ui.ImageRef
+import game.Constants.Constants
 import game.Entities.Ship
 import game.Geometry
 
@@ -15,11 +16,11 @@ class ShipAdapter : Adapter<Ship> {
             t.getId().toString(),
             t.getPosition().getX(),
             t.getPosition().getY(),
-            40.0,
-            40.0,
+            Constants.SHIP_SIZE.toDouble(),
+            Constants.SHIP_SIZE.toDouble(),
             geometry.getAngleFromRadians(t.getPosition().getAngle() ) + 270,
             ElementColliderType.Triangular,
-            ImageRef("starship", 70.0, 70.0)
+            ImageRef("starship", Constants.SHIP_SIZE.toDouble(), Constants.SHIP_SIZE.toDouble())
         )
     }
 

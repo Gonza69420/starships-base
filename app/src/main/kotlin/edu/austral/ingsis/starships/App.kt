@@ -2,9 +2,11 @@ package edu.austral.ingsis.starships
 
 import edu.austral.ingsis.starships.ui.*
 import edu.austral.ingsis.starships.ui.ElementColliderType.*
+import game.Adapter.AsteroidAdapter
 import game.Adapter.ShipAdapter
 import game.Constants.Constants
 import game.Entities.Gun.normalGun
+import game.Entities.Moveable
 import game.Entities.Ship
 import game.Factory.EntityFactory
 import game.Movement.ShipMovement
@@ -35,20 +37,15 @@ class Starships() : Application() {
         val STARSHIP_IMAGE_REF = ImageRef("starship", 70.0, 70.0)
         val Invoker : Invoker = Invoker(listOf())
         var game : Game = GamePlayeable(Constants.WIDTH, Constants.HEIGHT, listOf(), listOf(), 0, 2, Invoker)
+        val entityFactory : EntityFactory = EntityFactory()
     }
 
     override fun start(primaryStage: Stage) {
-        facade.elements["asteroid-1"] =
-            ElementModel("asteroid-1", 0.0, 0.0, 30.0, 40.0, 0.0, Elliptical, null)
-        facade.elements["asteroid-2"] =
-            ElementModel("asteroid-2", 100.0, 100.0, 30.0, 20.0, 90.0, Rectangular, null)
-        facade.elements["asteroid-3"] =
-            ElementModel("asteroid-3", 200.0, 200.0, 20.0, 30.0, 180.0, Elliptical, null)
 
         Invoker.addCommand(AccelerateCommand("W" , 1))
         Invoker.addCommand(DesacelerateCommand("S" , 1))
-        Invoker.addCommand(RotateLeft("A" , 1))
-        Invoker.addCommand(RotateRight("D" , 1))
+        Invoker.addCommand(RotateLeft("D" , 1))
+        Invoker.addCommand(RotateRight("A" , 1))
 
         game = game.setInvoker(Invoker)
 
@@ -79,14 +76,28 @@ class Starships() : Application() {
     }
 }
 
-class TimeListener(private val elements: Map<String, ElementModel>, private var facade: ElementsViewFacade) : EventListener<TimePassed> {
+ class TimeListener(private val elements: Map<String, ElementModel>, private var facade: ElementsViewFacade) : EventListener<TimePassed> {
     override fun handle(event: TimePassed) {
-        val game = Starships.game.moveEntities()
-        val gameObjects = game.getShip()
-
+        var game = Starships.game.moveEntities()
+        var gameObjects : List<Moveable> = game.getShip()
+        if (Math.random() > 0.98) {
+            game = game.generateEntity(
+                Starships.entityFactory.createAsteroid(
+                    Starships.game.gameGetEntityNumber(),
+                    Math.random(),
+                    Math.random(),
+                    Math.random(),
+                    Math.random()
+                )
+            )
+            gameObjects += game.getEntities()
+        }
         for (gameObject in gameObjects){
             if (gameObject is Ship){
                 facade.elements["starship"] = ShipAdapter().adapt(gameObject)
+            }
+            if (gameObject is game.Entities.Asteroid.Asteroid){
+                facade.elements[gameObject.getId().toString()] = AsteroidAdapter().adapt(gameObject)
             }
         }
         elements.forEach { facade.elements[it.key] = it.value }

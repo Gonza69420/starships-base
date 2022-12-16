@@ -28,7 +28,13 @@ class GamePlayeable (private val width : Double, private val height : Double, pr
     }
 
     override fun generateEntity(entity : Moveable) : Game {
-        return GamePlayeable(width, height, entities.plus(entity), ships, points, EntityNumber, invoker)
+        if (entities.size > 5){
+            println(entities.size)
+            return GamePlayeable(width, height, entities, ships, points, EntityNumber, invoker)
+        }
+        val list = entities.toMutableList()
+        list.add(entity)
+        return GamePlayeable(width, height, list , ships, points, EntityNumber, invoker)
     }
 
     override fun setShip(ship: List<Ship>): Game {

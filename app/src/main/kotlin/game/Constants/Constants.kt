@@ -22,7 +22,7 @@ class Constants {
         const val BOMB_SIZEY: Double = HEIGHT
         const val BOMB_SPEED: Double = 0.0
         const val BOMB_AMMO: Int = 1
-        const val SHIP_SIZE: Int = 70
+        const val SHIP_SIZE: Int = 40
         const val SHIP_HEALTH_EASY: Double = 1000.0
         const val SHIP_HEALTH_Medium: Double = 300.0
         const val SHIP_HEALTH_Hard: Double = 100.0
