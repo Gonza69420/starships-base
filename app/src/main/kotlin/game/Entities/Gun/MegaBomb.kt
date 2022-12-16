@@ -8,7 +8,7 @@ import game.Movement.straightMovement
 import game.Position
 
 class MegaBomb(private val ammo : Int, private val screenXSize : Double, private val screenYSize: Double, id: Int) : Gun,
-    Entity(id) {
+    Entity(id, "Gun") {
     override fun getBullet(): Bullet {
         return Bullet(
             Constants.BOMB_DAMAGE, Constants.BOMB_SIZEX, Constants.BOMB_SIZEY,

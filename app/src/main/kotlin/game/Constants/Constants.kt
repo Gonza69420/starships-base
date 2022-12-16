@@ -37,5 +37,8 @@ class Constants {
         const val POWERUP_SIZE: Int = 14
         const val POWERUP_SPEED: Double = 5.0
         const val POWERUP_ACCELERATION : Double = 0.0
+        const val MAXASTEROIDS : Int = 10
+        const val MAXENTITIES : Int = 20
+        const val SPAWNASTEROIDCHANCE : Double = 0.05
     }
 }

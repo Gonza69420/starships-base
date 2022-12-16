@@ -7,7 +7,8 @@ import game.Position
 
 class Ship(private val gun : Gun, private val health : Double, position: Position, velocityX: Double, velocityY: Double, id: Int) : Moveable(position, velocityX,
     velocityY,
-    id
+    id,
+    "Ship"
 ) , Damageable{
 
     fun setGun(gun : Gun) : Ship {
@@ -39,9 +40,9 @@ class Ship(private val gun : Gun, private val health : Double, position: Positio
     }
 
     override fun updatePosition() : Ship {
-        if (isOutOfBounds(Constants.WIDTH, Constants.HEIGHT)){
-            return Ship(gun, health, getPosition(), -getVelocityX(), -getVelocityY(), getId())
+        if (isOutOfBounds(Constants.WIDTH , Constants.HEIGHT)){
+            return Ship(gun, health, Position(Math.abs((Constants.WIDTH - 100 ) - getPosition().getX() ), Math.abs((Constants.HEIGHT - 100 ) - getPosition().getY()), getPosition().getAngle()  ), getVelocityX() * 0.2,    getVelocityY() * 0.2, getId())
         }
-        return Ship(gun, health, Position(getPosition().getX() + getVelocityX(), getPosition().getY() + getVelocityY(), getPosition().getAngle()), getVelocityX(), getVelocityY(), getId())
+        return Ship(gun, health, Position(getPosition().getX() + getVelocityX() , getPosition().getY() + getVelocityY() , getPosition().getAngle()), getVelocityX(), getVelocityY(), getId())
     }
 }

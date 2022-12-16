@@ -1,6 +1,8 @@
 package game.gameState
 
 import edu.austral.ingsis.starships.ui.KeyPressed
+import game.Constants.Constants
+import game.Entities.Asteroid.Asteroid
 import game.Entities.Entity
 import game.Entities.Moveable
 import game.Entities.Ship
@@ -28,13 +30,22 @@ class GamePlayeable (private val width : Double, private val height : Double, pr
     }
 
     override fun generateEntity(entity : Moveable) : Game {
-        if (entities.size > 5){
-            println(entities.size)
-            return GamePlayeable(width, height, entities, ships, points, EntityNumber, invoker)
+        val entityList = entities.toMutableList()
+        entityList.add(entity)
+        if (entityList.size > Constants.MAXENTITIES || getNumberOfAsteroids(entityList) > Constants.MAXASTEROIDS ){
+                return GamePlayeable(width, height, entities, ships, points, EntityNumber, invoker)
         }
-        val list = entities.toMutableList()
-        list.add(entity)
-        return GamePlayeable(width, height, list , ships, points, EntityNumber, invoker)
+        return GamePlayeable(width, height, entityList , ships, points, EntityNumber, invoker)
+    }
+
+    fun getNumberOfAsteroids(entityList : List<Moveable>) : Int {
+        var numberOfAsteroids = 0
+        for (entity in entityList) {
+            if (entity.getType().equals("Asteroid")) {
+                numberOfAsteroids += 1
+            }
+        }
+        return numberOfAsteroids
     }
 
     override fun setShip(ship: List<Ship>): Game {
@@ -46,18 +57,14 @@ class GamePlayeable (private val width : Double, private val height : Double, pr
     }
 
     override fun moveEntities(): Game {
-        var entitiesList = entities.toMutableList()
-
-        var shipList = ships.toMutableList()
-        for (entity in entitiesList) {
-            entitiesList.remove(entity)
+        var entitiesList = mutableListOf<Moveable>()
+        var shipList = mutableListOf<Ship>()
+        for (entity in entities) {
+            if (!entity.isOutOfBounds(width, height)) {
             entitiesList.add(entity.updatePosition())
-            if (entity.isOutOfBounds(width, height)) {
-                entitiesList.remove(entity)
             }
         }
-        for (ship in shipList) {
-            shipList.remove(ship)
+        for (ship in ships) {
             shipList.add(ship.updatePosition())
         }
         return GamePlayeable(width, height, entitiesList, shipList, points, EntityNumber, invoker)

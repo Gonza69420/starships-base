@@ -5,6 +5,7 @@ import edu.austral.ingsis.starships.ui.ElementColliderType.*
 import game.Adapter.AsteroidAdapter
 import game.Adapter.ShipAdapter
 import game.Constants.Constants
+import game.Entities.Asteroid.Asteroid
 import game.Entities.Gun.normalGun
 import game.Entities.Moveable
 import game.Entities.Ship
@@ -78,10 +79,14 @@ class Starships() : Application() {
 
  class TimeListener(private val elements: Map<String, ElementModel>, private var facade: ElementsViewFacade) : EventListener<TimePassed> {
     override fun handle(event: TimePassed) {
-        var game = Starships.game.moveEntities()
-        var gameObjects : List<Moveable> = game.getShip()
-        if (Math.random() > 0.98) {
-            game = game.generateEntity(
+
+        var gameObjects : MutableList<Moveable> = mutableListOf()
+        for (entity in Starships.game.getShip()) {
+            gameObjects.add(entity)
+        }
+
+        if (Math.random() < Constants.SPAWNASTEROIDCHANCE){
+            Starships.game = Starships.game.generateEntity(
                 Starships.entityFactory.createAsteroid(
                     Starships.game.gameGetEntityNumber(),
                     Math.random(),
@@ -90,16 +95,26 @@ class Starships() : Application() {
                     Math.random()
                 )
             )
-            gameObjects += game.getEntities()
         }
+
+        for (entity in Starships.game.getEntities()) {
+            gameObjects.add(entity)
+        }
+
         for (gameObject in gameObjects){
             if (gameObject is Ship){
                 facade.elements["starship"] = ShipAdapter().adapt(gameObject)
             }
-            if (gameObject is game.Entities.Asteroid.Asteroid){
-                facade.elements[gameObject.getId().toString()] = AsteroidAdapter().adapt(gameObject)
+            if (gameObject.getType().equals("Asteroid")){
+                facade.elements[gameObject.getId().toString()] = AsteroidAdapter(gameObject.getSize()).adapt(gameObject)
+                if (gameObject.isOutOfBounds(Constants.WIDTH, Constants.HEIGHT)){
+                    facade.elements[gameObject.getId().toString()] = null
+                }
             }
         }
+
+        Starships.game = Starships.game.moveEntities()
+
         elements.forEach { facade.elements[it.key] = it.value }
     }
 }

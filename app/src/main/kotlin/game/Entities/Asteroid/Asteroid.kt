@@ -11,7 +11,7 @@ class Asteroid(private val health : Double, private val size : Double,
                private val points : Int, private val destroyStrategy: DestroyStrategy<*>,
                private val asteroidMovement: Movement,
                position: Position, velocityX: Double, velocityY: Double, id: Int
-) : Moveable(position, velocityX, velocityY, id), Damageable, Harmful {
+) : Moveable(position, velocityX, velocityY, id, "Asteroid"), Damageable, Harmful {
 
 
 
@@ -42,7 +42,7 @@ class Asteroid(private val health : Double, private val size : Double,
         return 10.0
     }
 
-    fun getSize() : Double {
+    override fun getSize() : Double {
         return size
     }
 
@@ -56,7 +56,7 @@ class Asteroid(private val health : Double, private val size : Double,
     }
 
     override fun updatePosition(): Moveable {
-        return rotateAsteroid(0.1)
+        return move()
     }
 
 }

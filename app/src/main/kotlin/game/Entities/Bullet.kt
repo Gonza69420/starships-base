@@ -7,7 +7,7 @@ import game.Position
 class Bullet(private val damage: Double, private val sizeX : Double, private val sizeY : Double, private val movement : Movement,
              position: Position, velocityX: Double, velocityY: Double, id: Int
 ) :
-    Moveable(position, velocityX, velocityY, id), Harmful {
+    Moveable(position, velocityX, velocityY, id, "Bullet"), Harmful {
 
 
 
