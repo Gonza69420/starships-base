@@ -21,4 +21,8 @@ interface Game {
     fun setShip (ship : List<Ship>) : Game
 
     fun setInvoker (invoker : Invoker) : Game
+
+    fun moveEntities() : Game
+
+    fun getEntities() : List<Moveable>
 }

@@ -11,7 +11,6 @@ class straightMovement(val acceleration : Double, val initialVelocity : Double, 
             moveable.setVelocityY(getInitialVelocityY())
         }else{
             accelerate(moveable)
-            moveable.updatePosition()
         }
     }
 

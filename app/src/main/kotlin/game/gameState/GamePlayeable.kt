@@ -39,5 +39,25 @@ class GamePlayeable (private val width : Double, private val height : Double, pr
         return GamePlayeable(width, height, entities, ships, points, EntityNumber, invoker)
     }
 
+    override fun moveEntities(): Game {
+        val entitiesList = entities.toMutableList()
+
+        val shipList = ships
+        for (entity in entitiesList) {
+            entity.updatePosition()
+            if (entity.isOutOfBounds(width, height)) {
+                entitiesList.remove(entity)
+            }
+        }
+        for (ship in shipList) {
+            ship.updatePosition()
+        }
+        return GamePlayeable(width, height, entitiesList, shipList, points, EntityNumber, invoker)
+    }
+
+    override fun getEntities(): List<Moveable> {
+        return entities
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package game.Entities
 
+import game.Constants.Constants
 import game.Entities.Gun.Gun
 import game.Entities.Interfaces.Damageable
 import game.Position
@@ -35,5 +36,12 @@ class Ship(private val gun : Gun, private val health : Double, position: Positio
 
     override fun getPoints(): Int {
         return 0
+    }
+
+    override fun updatePosition() : Ship {
+        if (isOutOfBounds(Constants.WIDTH, Constants.HEIGHT)){
+            return Ship(gun, health, getPosition(), -getVelocityX(), -getVelocityY(), getId())
+        }
+        return Ship(gun, health, Position(getPosition().getX() + getVelocityX(), getPosition().getY() + getVelocityY()), getVelocityX(), getVelocityY(), getId())
     }
 }

@@ -51,12 +51,12 @@ class Starships() : Application() {
 
         game = game.setInvoker(Invoker)
 
-        game.setShip(listOf(EntityFactory().createShip("easy")))
+        game = game.setShip(listOf(EntityFactory().createShip("easy")))
 
 
         facade.elements["starship"] = ShipAdapter().adapt(game.getShip().get(0))
 
-        facade.timeListenable.addEventListener(TimeListener(facade.elements, facade))
+        facade.timeListenable.addEventListener(TimeListener(facade.elements, facade, game))
         facade.collisionsListenable.addEventListener(CollisionListener())
         keyTracker.keyPressedListenable.addEventListener(KeyPressedListener(game))
 
@@ -78,23 +78,15 @@ class Starships() : Application() {
     }
 }
 
-class TimeListener(private val elements: Map<String, ElementModel>, private val facade: ElementsViewFacade) : EventListener<TimePassed> {
+class TimeListener(private val elements: Map<String, ElementModel>, private val facade: ElementsViewFacade, private var game: Game) : EventListener<TimePassed> {
     override fun handle(event: TimePassed) {
-        elements.forEach {
-            val (key, element) = it
-            when(key) {
-                "starship" -> {}
-                "asteroid-1" -> {
-                    element.x.set(element.x.value + 0.25)
-                    element.y.set(element.y.value + 0.25)
-                }
-                else -> {
-                    element.x.set(element.x.value - 0.25)
-                    element.y.set(element.y.value - 0.25)
-                }
-            }
+        game = game.moveEntities()
+        val gameObjects = game.getEntities()
 
-            element.rotationInDegrees.set(element.rotationInDegrees.value + 1)
+        for (gameObject in gameObjects){
+            if (gameObject is Ship){
+                facade.elements["starship"] = ShipAdapter().adapt(gameObject)
+            }
         }
     }
 }

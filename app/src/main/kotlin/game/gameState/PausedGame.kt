@@ -34,4 +34,12 @@ class PausedGame : Game {
     override fun setInvoker(invoker: Invoker): Game {
         TODO("Not yet implemented")
     }
+
+    override fun moveEntities(): Game {
+        TODO("Not yet implemented")
+    }
+
+    override fun getEntities(): List<Moveable> {
+        TODO("Not yet implemented")
+    }
 }
